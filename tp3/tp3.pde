@@ -1,4 +1,4 @@
-//https://www.youtube.com/watch?v=JVNuBGz4LPk
+//https://www.youtube.com/watch?v=jcqlLgYOKUg
 PImage yellowTemple;
 float dis = 0;
 float medio1 = 498.5;
@@ -15,7 +15,6 @@ int colorManager = 1;
 color colorActual = color(255, 222, 1);
 
 void setup() {
-  frameRate(10);
   size(800, 400);
   yellowTemple = loadImage("tumblr.jpg");
 }
@@ -29,10 +28,26 @@ void draw() {
   rectMode(CENTER);
   image(yellowTemple, 0, 0, 400, height);
   obra();
-  distancia();
+  float valorDevuelto = calcularDistancia(600, height/2);
+  movimiento(valorDevuelto);
   colores();
 }
+
 void obra() {
+  cuadrados();
+
+  noStroke();
+  fill(35, 45, 30);
+  rect(medio1, height/2, 95, 305);
+  rect(medio2, height/2, 95, 305);
+  rect(medio3, height/2, 95, 305);
+
+  rectangulos(medio1);
+  rectangulos(medio2);
+  rectangulos(medio3);
+}
+
+void cuadrados() {
   rectMode(CENTER);
   for (int i = tamSq2; i<tamSq1; i+=4) {
     for (int j = tamSq3; j<tamSq2; j+=8) {
@@ -46,43 +61,40 @@ void obra() {
   rect(medio1, height/2, 95, 305);
   rect(medio2, height/2, 95, 305);
   rect(medio3, height/2, 95, 305);
-  for (int i=altRec2, j=larRect2; i<altRec1 && j< larRect1; i+=6, j+=8) {
-    for (int l= 25, t =215; l < altRec2 && t< larRect2; l +=4, t+=4) {
+}
+
+void rectangulos(float medio) {
+  for (int i = altRec2, j = larRect2; i < altRec1 && j < larRect1; i += 6, j += 8) {
+    for (int l = 25, t = 215; l < altRec2 && t < larRect2; l += 4, t += 4) {
       stroke(colorActual);
       fill(0, 0);
-      rect(medio1, height/2, i, j);
-      rect(medio1, height/2, l, t);
+      rect(medio, height/2, i, j);
+      rect(medio, height/2, l, t);
+
       fill(colorActual);
-      rect(medio1, height/2, 20, 215);
-      fill(0, 0);
-      rect(medio2, height/2, i, j);
-      rect(medio2, height/2, l, t);
-      fill(colorActual);
-      rect(medio2, height/2, 20, 215);
-      fill(0, 0);
-      rect(medio3, height/2, i, j);
-      rect(medio3, height/2, l, t);
-      fill(colorActual);
-      rect(medio3, height/2, 20, 215);
+      rect(medio, height/2, 20, 215);
     }
   }
 }
-void distancia() {
+
+float calcularDistancia(float centroX, float centroY) {
+  float dis = dist(mouseX, mouseY, centroX, centroY);
+  float desplazamiento = map(dis, 295, 450, 50, 100);
+  return desplazamiento;
+}
+
+void movimiento(float valorMovimiento) {
   if (mouseX > 400) {
-    dis = dist(mouseX, mouseY, 600, height/2);
-    float desplazamiento = map(dis, 295, 450, 50, 100);
-    println("distancia: "+medio1);
     if (mousePressed) {
-      medio1=498.5+desplazamiento;
-      medio3=702.5;
-      medio3=702.5-desplazamiento;
+      medio1 = 498.5 + valorMovimiento;
+      medio3 = 702.5 - valorMovimiento;
     } else {
-      medio1=498.5;
-      medio3=702.5;
-      medio3=702.5;
+      medio1 = 498.5;
+      medio3 = 702.5;
     }
   } else {
-    println("estás fuera del limite");
+    medio1 = 498.5;
+    medio3 = 702.5;
   }
 }
 
@@ -98,16 +110,33 @@ void colores() {
   } else if (colorManager == 5) {
     colorActual = color(0, 255, 0);
   } else if (colorManager == 6) {
-    colorActual = color(random(0255), random(0, 255), random(0, 255));
+    colorActual = color(138, 43, 226);
+  } else if (colorManager == 7) {
+    colorActual = color(255, 105, 180);
+  } else if (colorManager == 8) {
+    colorActual = color(0, 128, 255);
+  } else if (colorManager == 9) {
+    colorActual = color(255, 165, 0);
+  } else if (colorManager == 10) {
+    colorActual = color(200, 0, 130);
+  } else if (colorManager == 11) {
+    colorActual = color(0, 255, 127);
+  } else if (colorManager == 12) {
+    colorActual = color(220, 20, 60);
   }
 }
+
+
 void keyReleased() {
   if (key==' ') {
     colorManager +=1;
-    if (colorManager>6) {
-      colorManager =6;
+    if (colorManager>12) {
+      colorManager =12;
     }
-  }if (key=='r') {
-    colorManager =1;
   }
 }
+  void mouseClicked() {
+    if (mouseX>0 && mouseX< 400) {
+      colorManager =1;
+    }
+  }
